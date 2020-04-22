@@ -4,9 +4,9 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: *');
 header('Access-Control-Allow-Headers: *');
 $servername = "localhost";
-$username = "sealikes_quran";
-$password = "sealikes_quran";
-$dbname = "sealikes_quran";
+$username = "root";
+$password = "";
+$dbname = "quran";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
