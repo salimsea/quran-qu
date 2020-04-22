@@ -4,4 +4,5 @@
 3. run
 
 retrieve surah => localhost/quran?aksi=retrieveAll
+<br>
 retrieve ayat by surahId => localhost/quran?aksi=retrieveById&id=surahId
