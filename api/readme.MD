@@ -1,4 +1,4 @@
-﻿api using php native
+#API using php native
 1. import database
 2. setting connection database in index.php
 3. run
