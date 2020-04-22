@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "467482979418",
+    "firebase_url": "https://quran-online-f1c56.firebaseio.com",
+    "project_id": "quran-online-f1c56",
+    "storage_bucket": "quran-online-f1c56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467482979418:android:f26a0a2898943bd326bc63",
+        "android_client_info": {
+          "package_name": "com.quranonline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467482979418-d6ffe8krgn9nn9dtaa15oeq8uk2a6gv4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwbLiqwtuQyoyHxMQePoTZVUYsaGs3qk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467482979418-d6ffe8krgn9nn9dtaa15oeq8uk2a6gv4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467482979418:android:839ccd87530c072c26bc63",
+        "android_client_info": {
+          "package_name": "com.quranqu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467482979418-d6ffe8krgn9nn9dtaa15oeq8uk2a6gv4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwbLiqwtuQyoyHxMQePoTZVUYsaGs3qk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467482979418-d6ffe8krgn9nn9dtaa15oeq8uk2a6gv4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
