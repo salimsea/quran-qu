@@ -3,6 +3,6 @@
 2. setting connection database in index.php
 3. run
 
-retrieve surah => localhost/quran?aksi=retrieveAll
+retrieve surah => localhost/quran?aksi=retrieveSurah
 <br>
-retrieve ayat by surahId => localhost/quran?aksi=retrieveById&id=surahId
+retrieve ayat by surahId => localhost/quran?aksi=retrieveAyatById&id=surahId

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 22 Apr 2020 pada 13.08
+-- Waktu pembuatan: 23 Apr 2020 pada 20.49
 -- Versi server: 5.7.26-log
 -- Versi PHP: 7.3.6
 
@@ -6463,6 +6463,50 @@ INSERT INTO `surah` (`id`, `id_surah`, `nama_surah`, `jenis_surah`) VALUES
 (113, 113, ' Al Falaq', 'Makkiyah'),
 (114, 114, ' An Nas', 'Makkiyah');
 
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_quran_history`
+--
+
+CREATE TABLE `tb_quran_history` (
+  `id` int(11) NOT NULL,
+  `device_id` varchar(255) NOT NULL,
+  `surah_id` int(10) NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_quran_history`
+--
+
+INSERT INTO `tb_quran_history` (`id`, `device_id`, `surah_id`, `date`) VALUES
+(15, 'edGvEcGvND4:APA91bHfcD-jv67J_XvOdUsH0vzgzMizLchITs04ln8Sub1f13Fsd2_eeR0axIRrrk57VGRsQI4SBcJI7RyNsjWgGrecGhO5glS_9bmXDi0gPtomlrQD1mTyTEeqX4tx8szNrUDP-RA7', 2, '2020-04-23 20:22:44'),
+(14, 'edGvEcGvND4:APA91bHfcD-jv67J_XvOdUsH0vzgzMizLchITs04ln8Sub1f13Fsd2_eeR0axIRrrk57VGRsQI4SBcJI7RyNsjWgGrecGhO5glS_9bmXDi0gPtomlrQD1mTyTEeqX4tx8szNrUDP-RA7', 1, '2020-04-23 20:23:58'),
+(13, 'dwWjzzhXocY:APA91bFiBTFG3YWW6q8aSo3dtu-KdmD5WzRhzEu9jh_7LZcCrUMjQShzHjU9nLj-oy7jprCqrRZBprMtFrMuzS76Z944oJ4ei2yfW4hg8e1dl_wynHNqqIPcIpMmgdD9ovAfjGfo2p0_', 1, '2020-04-23 19:27:09'),
+(16, 'edGvEcGvND4:APA91bHfcD-jv67J_XvOdUsH0vzgzMizLchITs04ln8Sub1f13Fsd2_eeR0axIRrrk57VGRsQI4SBcJI7RyNsjWgGrecGhO5glS_9bmXDi0gPtomlrQD1mTyTEeqX4tx8szNrUDP-RA7', 8, '2020-04-23 20:23:33');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `users_device`
+--
+
+CREATE TABLE `users_device` (
+  `id` int(11) NOT NULL,
+  `device_id` varchar(255) NOT NULL,
+  `platform` varchar(10) NOT NULL,
+  `date` date NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `users_device`
+--
+
+INSERT INTO `users_device` (`id`, `device_id`, `platform`, `date`) VALUES
+(1, 'dwWjzzhXocY:APA91bFiBTFG3YWW6q8aSo3dtu-KdmD5WzRhzEu9jh_7LZcCrUMjQShzHjU9nLj-oy7jprCqrRZBprMtFrMuzS76Z944oJ4ei2yfW4hg8e1dl_wynHNqqIPcIpMmgdD9ovAfjGfo2p0_', 'android', '2020-04-23'),
+(2, 'edGvEcGvND4:APA91bHfcD-jv67J_XvOdUsH0vzgzMizLchITs04ln8Sub1f13Fsd2_eeR0axIRrrk57VGRsQI4SBcJI7RyNsjWgGrecGhO5glS_9bmXDi0gPtomlrQD1mTyTEeqX4tx8szNrUDP-RA7', 'android', '2020-04-23');
+
 --
 -- Indexes for dumped tables
 --
@@ -6480,6 +6524,18 @@ ALTER TABLE `surah`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `tb_quran_history`
+--
+ALTER TABLE `tb_quran_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `users_device`
+--
+ALTER TABLE `users_device`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
@@ -6488,6 +6544,18 @@ ALTER TABLE `surah`
 --
 ALTER TABLE `surah`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_quran_history`
+--
+ALTER TABLE `tb_quran_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT untuk tabel `users_device`
+--
+ALTER TABLE `users_device`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
