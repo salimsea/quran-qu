@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import { RefreshControl, View, StyleSheet, Dimensions, TextInput, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { RefreshControl, View, StyleSheet, Text, ScrollView } from 'react-native';
 import { getDataAPI } from '../../services/';
-import MenuBar from '../../components/MenuBar';
-import { useNavigation } from '@react-navigation/native';
+import { CardSurah } from '../../components/';
 import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
 
 
@@ -18,44 +17,19 @@ const CardSurahLoader = () => {
     )
 }
 
-const CardSurah = (props) => {
-    const navigation = useNavigation();
-    return(
-        <View key={props.key} style={styles.card__riwayat}>
-            <TouchableOpacity 
-                onPress={() => navigation.navigate('QuranReader', {
-                surahId: props.nomor,
-                namaSurah: props.nama_surah,
-                jenisSurah: props.jenis_surah
-                })
-                }>
-                <View style={{margin: 25,flexDirection:'row', alignItems:'center'}}>
-                    <View style={{width:'20%'}}>
-                        <Text style={{fontSize: 26, fontWeight:'500'}}>{props.nomor}</Text>
-                    </View>
-                    <View style={{width:'80%'}}>
-                        <Text style={{fontSize: 12}}>{props.nama_surah}</Text>
-                        <Text style={{fontSize: 12, fontWeight:'500', color:'#014871'}}>{props.jenis_surah} - {props.jumlah_ayat} Ayat</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        </View>
-    )
-}
-
 class Quran extends Component {
-    constructor() {
-        super();
+    constructor (props) {
+        super(props)
         this.array = [];
-      }
-    state = {
-        surah: [],
-        refreshing: false,
-        cardSurahLoader: false,
-    }
+        this.state = {
+            surah: [],
+            refreshing: false,
+            cardSurahLoader: false,
+        };
+    }  
 
     getDataSurah = async () =>{
-        var root = 'https://api.salimseal.com/quran/?aksi=retrieveAll';
+        var root = 'https://api.salimseal.com/quran/?aksi=retrieveSurah';
         const res = await getDataAPI(root, null).catch(err => err);
         this.setState({
             surah: res,
@@ -67,41 +41,37 @@ class Quran extends Component {
     async componentDidMount(){
         this.setState({cardSurahLoader: true});
         this.getDataSurah();
-        console.log("result => ",this.state.res);
     }
     
-    componentWillMount() {
-        for (var i = 1; i <= 8; i++) {
+    UNSAFE_componentWillMount() {
+        for (var i = 1; i <= 10; i++) {
           this.array.push(i);
         }
     }
 
     _onRefresh() {
-        this.setState({refreshing: true});
+        this.setState({refreshing: true, cardSurahLoader: true});
         this.getDataSurah();
     }
-    render(){       
+    render(){     
         return(
             <View style={{flex:1}}>
                 <View style={{backgroundColor:'#353839'}}>
                     <View style={{marginHorizontal: 20,flexDirection: 'row', paddingTop: 16, paddingBottom: 10}}>
-                        <View style={{position: 'relative', flex: 1}}>
-                            <TextInput style={{borderWidth: 1, borderColor: '#E8E8E8', borderRadius: 25, height: 40, fontSize: 14, paddingLeft: 45, paddingRight: 20, backgroundColor: 'white', marginRight: 18}} placeholder="Cari Surah..." />
-                            <Image source={require('../../assets/icon/search.png')} style={{position: 'absolute', top: 10, left: 12, height: 20, width:20}}/>
-                        </View>
-                        <View style={{width: 35, alignItems: 'center', justifyContent: 'center'}}>
-                            <Image source={require('../../assets/icon/setting.png')} style={{position:'absolute', width:25,height: 25}} />
-                        </View>
+                        <Text style={{fontSize:15,fontWeight:'bold', color: '#fff'}}>Quran Mobile</Text>
                     </View>
                 </View>
+                <View style={styles.card__body}>
                 <ScrollView 
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                         <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh.bind(this)}/>
                       }
                     >
-                    <View style={styles.card__body} />
-                    <View style={{marginTop: -290}}>
+                   
+
+                   
+                    <View>
                         {
                             this.state.cardSurahLoader === true ? (
                                 <>
@@ -114,22 +84,33 @@ class Quran extends Component {
                                 </>
                                 
                             ) : 
-                            this.state.surah != null ? (
+                            (this.state.surah).length >= 30 ? (
                                 <>
                                 {
-                                        this.state.surah.map(note => {
+                                        this.state.surah.map((v,i) => {
                                             return (
-                                                <CardSurah key={note} nomor={note.id_surah} nama_surah={note.nama_surah} jenis_surah={note.jenis_surah} jumlah_ayat={note.jumlah_ayat} />
-                                                // <CardRiwayat key={note} aplikasi={note.Cr.ProjectTitle} permintaan={note.Cr.Description} />              
+                                                <CardSurah key1={i} key2={i} nomor={v.id_surah} nama_surah={v.nama_surah} jenis_surah={v.jenis_surah} jumlah_ayat={v.jumlah_ayat} />
                                             )
                                         })
                                     }
                                 </>
-                            ) : null
+                            ) : (
+                                <>
+                                {
+                                    this.array.map((item, key) =>
+                                    (
+                                      <CardSurahLoader key={key}  />
+                                    ))
+                                }
+                                </>
+                                
+                            )
                         }       
                     </View>
+                    <View style={{height:10}} />
                 </ScrollView>
-                <MenuBar />
+                
+                </View>
             </View>
         )    
     }
@@ -137,11 +118,7 @@ class Quran extends Component {
 
 const styles = StyleSheet.create({
     card__body: {
-        width:Dimensions.get('window').width, 
-        height:300, 
-        backgroundColor: '#353839', 
-        borderBottomEndRadius: 150,
-        elevation: 5
+        flex:1,
     },
     card__riwayat: {
         height: 70, 

@@ -32,6 +32,7 @@ const Router = () => {
                 name="QuranReader" 
                 component={QuranReader}
                 options={{
+                    title: 'Kembali',
                     headerShown: false,
                 }} 
             />

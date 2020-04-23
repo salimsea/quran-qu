@@ -1,149 +1,97 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, View, StyleSheet, Platform, Animated, ScrollView, } from 'react-native';
-import SkeletonContent from 'react-native-skeleton-content-nonexpo';
-import ContentLoader, { Rect, Circle } from 'react-content-loader/native';
-
-const HEADER_MIN_HEIGHT = 50;
-const HEADER_MAX_HEIGHT = 200;
+import { Image, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import ContentLoader, { Rect, List  } from 'react-content-loader/native';
+import { getDataAPI } from '../../services/';
 
 export default class QuranReader extends Component {
+  constructor (props) {
+      super(props)
+      this.array = [];
+      this.state = {
+          ayat: [],
+      };
+  }  
 
-  constructor() {
-    super();
-
-    this.scrollYAnimatedValue = new Animated.Value(0);
-
-    this.array = [];
-  }
-  state = {
-    loading: true
-  }
-  
-  componentDidMount(){
-    setTimeout(() => {this.setState({
-      loading: false
-    });},3000)
+  getDataAyat = async () =>{
+    var root = `https://api.salimseal.com/quran/?aksi=retrieveAyatById&id=${this.props.route.params.surahId}`;
+    const res = await getDataAPI(root, null).catch(err => err);
+    this.setState({
+        ayat: res,
+    })
   }
 
-  componentWillMount() {
-    for (var i = 1; i <= 3; i++) {
-      this.array.push(i);
-    }
+  async componentDidMount(){
+     this.getDataAyat();
   }
 
+  UNSAFE_componentWillMount() {
+      for (var i = 1; i <= 5; i++) {
+        this.array.push(i);
+      }
+  }
   render() {
-
-    const headerHeight = this.scrollYAnimatedValue.interpolate(
-      {
-        inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT)],
-        outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-        extrapolate: 'clamp'
-      });
-
-    const headerBackgroundColor = this.scrollYAnimatedValue.interpolate(
-      {
-        inputRange: [0, (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT)],
-        outputRange: ['#353839', '#353839'],
-        extrapolate: 'clamp'
-      });
-
-    const { surahId, namaSurah, jenisSurah } = this.props.route.params;
-
+    const { surahId, namaSurah, jenisSurah, jumlahAyat } = this.props.route.params;
+    const back = () => {
+      this.props.navigation.goBack()
+    }
     return (
-      <View style={styles.container} >
-        <ScrollView
-          contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT }}
-          scrollEventThrottle={16}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: this.scrollYAnimatedValue } } }]
-          )}>
-           
+      <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor:'white', flex:1}}>
+        
+        <View style={{flexDirection:'row', height:50,elevation:5, backgroundColor:'#fefefe'}}>
+          <View style={{justifyContent:'center', marginLeft:10, marginRight:10}}>
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+              <Image source={require('../../assets/icon/back.png')} style={{width:30, height:30}} />
+            </TouchableOpacity>
+          </View>
+          <View style={{justifyContent:'center'}}>
+            <Text style={{fontSize: 15}}>{namaSurah}</Text>
+            <Text style={{fontSize: 10}}>{jenisSurah} - {jumlahAyat} Ayat</Text>
+          </View>
+        </View>
+        
+        <View style={{alignItems:'center'}}>
+          {/* <Text style={{fontSize: 15, fontWeight:'bold',color:'#353839', fontFamily: 'LPMQ'}}>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</Text> */}
+        </View>
+        <View style={{margin:5}}>
           {
-            this.array.map((item, key) =>
-              (
-                <View key={key} style={styles.item}>
-                   <ContentLoader viewBox="0 0 380 70">
-                     <Circle cx="30" cy="30" r="30" />
-                    <Rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
-                    <Rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
-                  </ContentLoader>
-                </View>
-              ))
+             (this.state.ayat).length >= 3 ? (
+                <>
+                {
+                      this.state.ayat.map(v => {
+                          return (
+                              <View key={v} style={{borderBottomColor: '#E8E9ED', borderBottomWidth: 1}}>
+                                <View style={{flexDirection: 'row', paddingHorizontal: 16, marginTop:15, justifyContent:'space-between', top: 0, left: 0, width: '100%'}}>
+                                  <View style={{width: 40, height: 40, backgroundColor: '#fefefe', borderRadius: 35, alignItems:'center', justifyContent:'center', borderColor: '#f0f0f0',borderWidth:2}}>
+                                      <Text style={{fontSize:13, color:'#353839'}}>{v.nomor}</Text>
+                                  </View>
+                                    <View style={{ width: '80%'}}>
+                                        <Text style={{fontSize: 20, fontWeight:'500',color:'#353839', fontFamily: 'LPMQ'}}>{v.ayat}</Text>
+                                        <Text style={{fontSize: 15, fontWeight:'500',color:'#353839'}}>{v.terjemahan}</Text>
+                                        <View style={{height:20}} />
+                                    </View>
+                                </View>
+                              </View>
+                          )
+                      })
+                    }
+                </>
+            ) : (
+              <>
+              {
+                  this.array.map((item, key) =>
+                  (
+                    <View key={key} style={{margin: 20, alignItems:'flex-start'}}>
+                    <List />
+                    </View>
+                  ))
+              }
+              </>
+              
+          )
           }
-            <SkeletonContent
-                containerStyle={styles.skeleton}
-                isLoading={this.state.loading}
-                layout={[
-                { key: "title" , width: 350, height: 100, margin: 20 },
-                { key: "description", width: 350, height: 200, margin: 20 },
-                ]}
-                >
-
-                <Text style={styles.text}>
-                Cultivated who resolution connection motionless did occasional. Journey promise if it colonel.
-                </Text>
-
-                <Text style={styles.text}>
-                Can all mirth abode nor hills added. Them men does for body pure. Far end not horses remain sister. Mr parish is to he answer roused piqued afford sussex.
-                It abode words began enjoy years no do ﻿no. Tried spoil as heart visit blush or.
-                </Text>
-
-            </SkeletonContent>
-            
-        </ScrollView>
-
-        <Animated.View style={[styles.animatedHeaderContainer, { height: headerHeight, backgroundColor: headerBackgroundColor }]}>
-          <Text style={styles.headerText}>{namaSurah} - {jenisSurah}</Text>
-        </Animated.View>
-
-      </View>
+          
+        </View>
+      </ScrollView>
     );
   }
 }
-
-const styles = StyleSheet.create(
-  {
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      backgroundColor: "white"
-    },
-    animatedHeaderContainer: {
-      position: 'absolute',
-      top: (Platform.OS == 'ios') ? 20 : 0,
-      left: 0,
-      right: 0,
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    headerText: {
-      color: 'white',
-      fontSize: 15
-    },
-    item: {
-      backgroundColor: '#fefefe',
-      borderRadius: 20,
-      elevation: 5,
-      margin: 8,
-      height: '100%',
-      maxHeight: 100,
-      justifyContent: 'center',
-      alignItems: 'center',
-      margin: 10
-    },
-    itemText: {
-      margin: 20,
-      color: 'black',
-      fontSize: 14
-    },
-    skeleton:{
-    flex: 1,
-    width: '100%'
-    },
-    text: {
-      fontSize: 18,
-      margin: 20
-    }
-    
-  });
-  

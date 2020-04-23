@@ -2,12 +2,24 @@ import React, { Component, useEffect } from 'react';
 import PushNotification from 'react-native-push-notification';
 import { NavigationContainer } from '@react-navigation/native';
 import Router from './router';
+import { postDataAPI } from './services';
+import {AsyncStorage} from 'react-native';
 
-export default class App extends Component {
-  handleDeviceId = (token) => {
+const AddDevice = (param) => {
+  var root = 'https://api.salimseal.com/quran/?aksi=addDevice';
+  var bodyFormData = new FormData();
+      bodyFormData.append('device_id', param.token);
+      bodyFormData.append('platform', param.os);
+  const res = postDataAPI(root, bodyFormData).catch(err => err);
+  AsyncStorage.setItem('token', param.token);
+}
+
+const App = () => {
+  useEffect(()=>{
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function(token) {
+        AddDevice(token)
         console.log("TOKEN:", token);
       },
     
@@ -17,7 +29,7 @@ export default class App extends Component {
         // process the notification
         
         // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
-        // notification.finish(PushNotificationIOS.FetchResult.NoData);
+        notification.finish(PushNotificationIOS.FetchResult.NoData);
         // clear from action
         PushNotification.cancelLocalNotifications({id:notification.id.toString()})
       },
@@ -43,15 +55,14 @@ export default class App extends Component {
        */
       requestPermissions: true
     });
-  }
-  async componentDidMount() {
-    this.handleDeviceId();
-  }
-  render() {
-    return (
+    
+  },[])
+
+  return(
       <NavigationContainer>
         <Router />  
       </NavigationContainer>
-    )
-  }
+  )
 }
+
+export default App
